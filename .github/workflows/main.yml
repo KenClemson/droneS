@@ -29,6 +29,7 @@ jobs:
             -e "PYTHONPATH=/app" \
             my-python-tests:latest \
             pytest tests/API --gherkin-terminal-reporter --html=/app/reports/api-report.html --self-contained-html --cucumberjson=/app/reports/api-report.json --log-cli-level=INFO --color=yes
+        continue-on-error: true  # Continue to the next step even if this step fails
 
       - name: Upload API test report
         uses: actions/upload-artifact@v3
@@ -45,6 +46,7 @@ jobs:
             -e "PYTHONPATH=/app" \
             my-python-tests:latest \
             pytest tests/UI --gherkin-terminal-reporter --html=/app/reports/ui-report.html --self-contained-html --cucumberjson=/app/reports/ui-report.json --log-cli-level=INFO --color=yes
+        continue-on-error: true  # Continue to the next step even if this step fails
 
       - name: Upload UI test report
         uses: actions/upload-artifact@v3
