@@ -28,8 +28,7 @@ jobs:
             -v "${{ github.workspace }}/screenshots:/app/screenshots" \
             -e "PYTHONPATH=/app" \
             my-python-tests:latest \
-            pytest tests/API --gherkin-terminal-reporter --html=/app/reports/api-report.html --self-contained-html --cucumberjson=/app/reports/api-report.json --log-cli-level=INFO --color=yes
-        continue-on-error: true  # Continue to the next step even if this step fails
+            pytest tests/API --tb=short --gherkin-terminal-reporter --html=/app/reports/api-report.html --self-contained-html --cucumberjson=/app/reports/api-report.json --log-cli-level=INFO --color=yes || echo "::error file=tests/API::Pytest API tests failed"
 
       - name: Upload API test report
         uses: actions/upload-artifact@v3
@@ -45,8 +44,7 @@ jobs:
             -v "${{ github.workspace }}/screenshots:/app/screenshots" \
             -e "PYTHONPATH=/app" \
             my-python-tests:latest \
-            pytest tests/UI --gherkin-terminal-reporter --html=/app/reports/ui-report.html --self-contained-html --cucumberjson=/app/reports/ui-report.json --log-cli-level=INFO --color=yes
-        continue-on-error: true  # Continue to the next step even if this step fails
+            pytest tests/UI --tb=short --gherkin-terminal-reporter --html=/app/reports/ui-report.html --self-contained-html --cucumberjson=/app/reports/ui-report.json --log-cli-level=INFO --color=yes || echo "::error file=tests/UI::Pytest UI tests failed"
 
       - name: Upload UI test report
         uses: actions/upload-artifact@v3
