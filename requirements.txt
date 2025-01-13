@@ -1,0 +1,9 @@
+pytest==7.4.0              # Main testing framework
+pytest-bdd==6.1.1          # BDD-style testing with Pytest
+selenium==4.10.0           # Browser automation
+python-dotenv==1.0.0       # Optional for environment variables
+pytest-html==3.2.0         # For generating HTML reports
+pytest-cov==4.1.0          # For test coverage reports
+pytest-xdist==3.3.1        # Optional for parallel test execution
+requests==2.31.0           #for api tests
+PyYAML==6.0
