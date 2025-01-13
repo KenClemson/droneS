@@ -1,0 +1,53 @@
+name: Run Dockerized API and UI Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-python-tests:latest .
+
+      - name: Run API tests inside Docker container
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/app" \
+            -v "${{ github.workspace }}/reports:/app/reports" \
+            -v "${{ github.workspace }}/screenshots:/app/screenshots" \
+            -e "PYTHONPATH=/app" \
+            my-python-tests:latest \
+            pytest tests/API --gherkin-terminal-reporter --html=/app/reports/api-report.html --self-contained-html --cucumberjson=/app/reports/api-report.json --log-cli-level=INFO --color=yes
+
+      - name: Upload API test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: api-test-report
+          path: reports/api-report.html
+
+      - name: Run UI tests inside Docker container
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/app" \
+            -v "${{ github.workspace }}/reports:/app/reports" \
+            -v "${{ github.workspace }}/screenshots:/app/screenshots" \
+            -e "PYTHONPATH=/app" \
+            my-python-tests:latest \
+            pytest tests/UI --gherkin-terminal-reporter --html=/app/reports/ui-report.html --self-contained-html --cucumberjson=/app/reports/ui-report.json --log-cli-level=INFO --color=yes
+
+      - name: Upload UI test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: ui-test-report
+          path: reports/ui-report.html
