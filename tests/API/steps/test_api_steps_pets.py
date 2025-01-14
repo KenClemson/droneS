@@ -8,9 +8,12 @@ from requests.exceptions import RequestException
 from pytest_bdd import scenarios, given, when, then, parsers
 import json
 import logging
+from tests.config_loader import load_config
 
 # Base URL for the API
-BASE_URL = "https://petstore.swagger.io/v2"
+#BASE_URL = "https://petstore.swagger.io/v2"
+config = load_config()
+BASE_URL = config["API_BASE_URL"]
 
 # Load scenarios from feature files
 scenarios("/app/tests/API/features/pets.feature")

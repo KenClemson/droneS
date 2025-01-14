@@ -2,7 +2,7 @@ Feature: User Login
   In order to access the secure area of the website,
   Users should be able to log in with valid and invalid credentials.
 
-  Scenario Outline: Attempt login with different credentials
+  Scenario Outline: Attempt login with correct and not accepted characters
     Given I am on the login page
     When I enter <username> and <password>
     And I click the login button
