@@ -74,7 +74,10 @@
 ### Jira API Bug Reports
 
 **DRNSHLD 20001: Missing Authentication Mechanism**  
-* **Summary:** No authentication is required for API requests.  
+* **Summary:** No authentication is required for API requests. 
+
+**Severity:** HIGH
+
 * **Steps to Reproduce:**  
   1. Send any API request without authentication.  
 * **Expected Result:** API should require valid authentication.  
@@ -83,7 +86,10 @@
 ---
 
 **DRNSHLD 20002: Duplicate Pet ID Handling**  
-* **Summary:** Duplicate pet IDs result in data overwrites.  
+* **Summary:** Duplicate pet IDs result in data overwrites. 
+
+**Severity:** VERY HIGH
+
 * **Steps to Reproduce:**  
   1. POST a new pet with a unique ID.  
   2. POST another pet with the same ID.  
@@ -93,7 +99,10 @@
 ---
 
 **DRNSHLD 20003: Inconsistent Pet Creation Response**  
-* **Summary:** The API returns unclear responses for pet creation.  
+* **Summary:** The API returns unclear responses for pet creation. 
+
+**Severity:** HIGH
+
 * **Steps to Reproduce:**  
   1. Send a POST request to `/pet/{petId}`.  
   2. Observe the response.  
@@ -104,6 +113,9 @@
 
 **DRNSHLD 20004: Misconfigured Access-Control-Allow-Methods Header**  
 * **Summary:** The response headers allow all CRUD methods regardless of endpoint.  
+
+**Severity:** HIGH
+
 * **Steps to Reproduce:**  
   1. Send a request to any endpoint.  
   2. Check the "Access-Control-Allow-Methods" header.  
@@ -114,6 +126,9 @@
 
 **DRNSHLD 20005: Incorrect Status Code for Deleted Pet**  
 * **Summary:** Status code 200 is returned for a deleted pet instead of 404.  
+
+**Severity:** HIGH
+
 * **Steps to Reproduce:**  
   1. DELETE a pet.  
   2. Attempt a GET request for the deleted pet.  
@@ -123,7 +138,10 @@
 ---
 
 **DRNSHLD 20006: Inconsistent Deletion Response Message**  
-* **Summary:** Deletion response includes unclear values.  
+* **Summary:** Deletion response includes unclear values. 
+
+**Severity:** HIGH
+
 * **Steps to Reproduce:**  
   1. Send a DELETE request to `/pet/{petId}`.  
   2. Observe the response.  
@@ -134,6 +152,9 @@
 
 **DRNSHLD 20007: Invalid Data Accepted in Pet Creation**  
 * **Summary:** Invalid pet data is accepted during creation.  
+
+**Severity:** HIGH
+
 * **Steps to Reproduce:**  
   1. Send a POST request to `/pet` with missing or incorrect fields.  
 * **Expected Result:** API should return a validation error.  

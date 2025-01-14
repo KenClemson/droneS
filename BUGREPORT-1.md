@@ -70,6 +70,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** The error message text is truncated inside the bounds of the red box.
 
+**Severity:** MEDIUM
+
 **Steps to Reproduce:**  
 1. Navigate to the login page.  
 2. Trigger an error (e.g., enter incorrect credentials).  
@@ -83,6 +85,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** The down-facing triangle on filter buttons cannot be clicked.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as a standard user.  
 2. Attempt to click the down-facing triangle on the filter button.  
@@ -95,6 +99,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10003: Red Cart Number Disappears on Reset
 
 **Summary:** Reset app state causes the red number to disappear from the trolley but not from the cart.
+
+**Severity:** HIGH
 
 **Steps to Reproduce:**  
 1. Log in as a standard user.  
@@ -111,6 +117,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** It is possible to complete an order without adding any items.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as a standard user.  
 2. Navigate to checkout without adding items.  
@@ -124,6 +132,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10005: Reset App Does Not Reset Filters
 
 **Summary:** Resetting the app state does not revert the filters to default values.
+
+**Severity:** HIGH
 
 **Steps to Reproduce:**  
 1. Log in as a standard user.  
@@ -139,6 +149,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** Incorrect images are displayed when logged in as a problem user.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as a problem user.  
 2. Browse through the item list.  
@@ -151,6 +163,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10007: Unable to Set Filters as Problem User
 
 **Summary:** Filters cannot be set when logged in as a problem user.
+
+**Severity:** HIGH
 
 **Steps to Reproduce:**  
 1. Log in as a problem user.  
@@ -165,6 +179,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** Add to cart buttons 3, 4, and 6 do not respond when clicked for the problem user.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as a problem user.  
 2. Attempt to add items 3, 4, and 6 to the cart.  
@@ -177,6 +193,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10009: Cannot Remove Items from Cart
 
 **Summary:** Items added to the cart cannot be removed for the problem user.
+
+**Severity:** HIGH
 
 **Steps to Reproduce:**  
 1. Log in as a problem user.  
@@ -192,6 +210,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** Clicking on Hamburger Menu > About causes a 404 error.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as a problem user.  
 2. Click Hamburger Menu > About.  
@@ -204,6 +224,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10011: Last Name Field Alters First Name Field
 
 **Summary:** Entering a last name adds a single character to the first name field.
+
+**Severity:** VERY HIGH
 
 **Steps to Reproduce:**  
 1. Navigate to the Checkout > Your Information page.  
@@ -218,6 +240,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** Severe performance issues occur when logging in as the performance_glitch_user.
 
+**Severity:** VERY HIGH
+
 **Steps to Reproduce:**  
 1. Log in as performance_glitch_user.  
 
@@ -229,6 +253,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10013: Item Removal Failure for Error User
 
 **Summary:** Items cannot be removed after being added to the cart when logged in as error user.
+
+**Severity:** VERY HIGH
 
 **Steps to Reproduce:**  
 1. Log in as error user.  
@@ -244,6 +270,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** The first item displays a dog image instead of a backpack.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as visual user.  
 2. View the first item.  
@@ -256,6 +284,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10015: Cart Price Mismatch for Visual User
 
 **Summary:** Prices in the cart do not match the displayed item prices.
+
+**Severity:** VERY HIGH
 
 **Steps to Reproduce:**  
 1. Log in as visual user.  
@@ -271,6 +301,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** The checkout button and trolley icon are out of place.
 
+**Severity:** MEDIUM
+
 **Steps to Reproduce:**  
 1. Log in as visual user.  
 2. Observe the position of the checkout button and trolley icon.  
@@ -283,6 +315,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10017: Hamburger Menu Angle Issue
 
 **Summary:** The hamburger menu appears at a slight angle.
+
+**Severity:** MEDIUM
 
 **Steps to Reproduce:**  
 1. Log in as visual user.  
@@ -297,6 +331,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** Clicking Hamburger > All Items changes the prices of all items.
 
+**Severity:** VERY HIGH
+
 **Steps to Reproduce:**  
 1. Log in as visual user.  
 2. Click Hamburger Menu > All Items.  
@@ -309,6 +345,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10019: Footer Misalignment
 
 **Summary:** The footer is out of place on the page.
+
+**Severity:** MEDIUM
 
 **Steps to Reproduce:**  
 1. Log in as visual user.  
@@ -323,6 +361,8 @@ This report provides a high-level summary of all identified issues to assist in 
 
 **Summary:** The "Add to Cart" button for the 6th item is out of place.
 
+**Severity:** HIGH
+
 **Steps to Reproduce:**  
 1. Log in as visual user.  
 2. View the 6th item.  
@@ -335,6 +375,8 @@ This report provides a high-level summary of all identified issues to assist in 
 ## DRNSHLD 10021: Missing Checkout Button
 
 **Summary:** The checkout button is missing from the cart.
+
+**Severity:** HIGH
 
 **Steps to Reproduce:**  
 1. Log in as visual user.  
