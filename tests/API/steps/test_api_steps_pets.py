@@ -8,9 +8,12 @@ from requests.exceptions import RequestException
 from pytest_bdd import scenarios, given, when, then, parsers
 import json
 import logging
+from tests.config_loader import load_config
 
 # Base URL for the API
-BASE_URL = "https://petstore.swagger.io/v2"
+#BASE_URL = "https://petstore.swagger.io/v2"
+config = load_config()
+BASE_URL = config["API_BASE_URL"]
 
 # Load scenarios from feature files
 scenarios("/app/tests/API/features/pets.feature")
@@ -98,7 +101,9 @@ def post_pet(context):
     try:
         payload = context["payload"]
         response = requests.post(f"{BASE_URL}/pet", json=payload)
+        validate_response_headers(response)
         context["response"] = response  # Store the response in context
+
     except requests.exceptions.RequestException as e:
         logging.error(f"Request failed: {e}")
         context["response"] = None
@@ -124,6 +129,7 @@ def get_pet_by_id(context):
     """Sends a GET request to retrieve the pet by ID."""
     pet_id = context["payload"]["id"]
     response = requests.get(f"{BASE_URL}/pet/{pet_id}")
+    validate_response_headers(response)
     context["get_response"] = response  # Store the GET response in context
     logging.info(f"GET Response Status Code: {response.status_code}")
     try:
@@ -146,6 +152,7 @@ def get_pet_by_id(status, id, context):
     try:
         # Send GET request
         response = requests.get(f"{BASE_URL}/pet/findByStatus?status={status}")
+        validate_response_headers(response)
         response.raise_for_status()  # Ensure a successful status code
         response_json = response.json()
 
@@ -257,225 +264,51 @@ def verify_pet_object(context):
     logging.info("All fields in the pet object match the original POST payload!")
 
 
-
-# ------------------------------------
-# GET PET BY ID
-# ------------------------------------
-@given("a valid pet ID")
-def valid_pet_id():
-    return 1
-
-@given("an invalid pet ID")
-def invalid_pet_id():
-    return "invalid_id"
-
-@when("I send a GET request with a valid pet ID")
-def get_pet_by_id(valid_pet_id):
+@when(parsers.parse("I send a DELETE request with a valid pet {id}"))
+def delete_pet(context, id):
     try:
-        response = requests.get(f"{BASE_URL}/pet/{valid_pet_id}")
+        response = requests.delete(f"{BASE_URL}/pet/{id}")
+        context["response"] = response
+        logging.info(f"Found deleted: {response}")
         response.raise_for_status()
     except RequestException as e:
         return e.response
     return response
 
-@when("I send a GET request with an invalid pet ID")
-def get_pet_by_invalid_id(invalid_pet_id):
-    try:
-        response = requests.get(f"{BASE_URL}/pet/{invalid_pet_id}")
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@then("the response status code should be 200 and pet details should be returned")
-def verify_pet_by_id(get_pet_by_id):
-    assert get_pet_by_id.status_code == 200
-    assert "name" in get_pet_by_id.json()
-
-@then("the response status code should be 404 for an invalid pet ID")
-def verify_pet_not_found(get_pet_by_invalid_id):
-    assert get_pet_by_invalid_id.status_code == 404
-
-
-# ------------------------------------
-# DELETE PET
-# ------------------------------------
-@when("I send a DELETE request with a valid pet ID")
-def delete_pet(valid_pet_id):
-    try:
-        response = requests.delete(f"{BASE_URL}/pet/{valid_pet_id}")
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@when("I send a DELETE request with an invalid pet ID")
-def delete_invalid_pet():
-    try:
-        response = requests.delete(f"{BASE_URL}/pet/invalid_id")
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
 
 @then("the response status code should be 200 and the pet should be deleted")
-def verify_pet_deleted(delete_pet):
-    assert delete_pet.status_code == 200
+def verify_pet_deleted(context):
+    response = context["response"]
+    expected_message = "Pet not found"
 
-@then("the response status code should be 404 for non-existent pet")
-def verify_pet_delete_failure(delete_invalid_pet):
-    assert delete_invalid_pet.status_code == 404
+    assert response.status_code == 200, f"Expected 200 but got {response.status_code}"
 
-
-# ------------------------------------
-# STORE ENDPOINT TESTS
-# ------------------------------------
-@given("a valid order payload")
-def valid_order_payload():
-    return {
-        "id": 10,
-        "petId": 1,
-        "quantity": 2,
-        "shipDate": "2025-01-01T10:00:00.000Z",
-        "status": "placed",
-        "complete": True
-    }
-
-@given("an invalid order payload")
-def invalid_order_payload():
-    return {
-        "id": "invalid_id",
-        "petId": -1,
-        "quantity": "two",
-        "status": "invalid"
-    }
-
-@when("I send a POST request to place an order")
-def place_order(valid_order_payload):
     try:
-        response = requests.post(f"{BASE_URL}/store/order", json=valid_order_payload)
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
+        response_json = response.json()
+        logging.info(f"Response JSON: {json.dumps(response_json, indent=4)}")
+        actual_message = response_json.get("message", "No message found")
+        assert actual_message == expected_message, f"Expected '{expected_message}', but got '{actual_message}'"
+    except json.JSONDecodeError:
+        pytest.fail("Response body is not valid JSON")
 
-@when("I send a POST request with an invalid order payload")
-def place_invalid_order(invalid_order_payload):
-    try:
-        response = requests.post(f"{BASE_URL}/store/order", json=invalid_order_payload)
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
+def validate_response_headers(response, expected_headers=None):
+    """
+    Validates that the response contains the expected headers.
+    If `expected_headers` is None, default common headers are checked.
+    We need to find out from the dev team what headers are expected.
+    """
+    # Log the full headers for visibility
+    logging.info(f"Response Headers: {json.dumps(dict(response.headers), indent=4)}")
 
-@then("the response status code should be 200 and the order should be placed")
-def verify_order_placed(place_order):
-    assert place_order.status_code == 200
+    if expected_headers is None:
+        expected_headers = {
+            "Content-Type": "application/json",
+            "Connection": "keep-alive"
+        }
 
-@then("the response status code should be 400 for invalid order payload")
-def verify_invalid_order(place_invalid_order):
-    assert place_invalid_order.status_code == 400
-
-
-# ------------------------------------
-# USER ENDPOINT TESTS
-# ------------------------------------
-@given("a valid user payload")
-def valid_user_payload():
-    return {
-        "id": 100,
-        "username": "testuser",
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "testuser@example.com",
-        "password": "password123",
-        "phone": "1234567890",
-        "userStatus": 1
-    }
-
-@given("an invalid user payload")
-def invalid_user_payload():
-    return {
-        "username": "",
-        "password": "short"
-    }
-
-@when("I send a POST request to create a new user")
-def create_user(valid_user_payload):
-    try:
-        response = requests.post(f"{BASE_URL}/user", json=valid_user_payload)
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@when("I send a POST request with an invalid user payload")
-def create_invalid_user(invalid_user_payload):
-    try:
-        response = requests.post(f"{BASE_URL}/user", json=invalid_user_payload)
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@then("the response status code should be 200 and the user should be created")
-def verify_user_created(create_user):
-    assert create_user.status_code == 200
-
-@then("the response status code should be 400 for invalid user payload")
-def verify_invalid_user_created(create_invalid_user):
-    assert create_invalid_user.status_code == 400
+    for header, expected_value in expected_headers.items():
+        assert header in response.headers, f"Header '{header}' is missing!"
+        actual_value = response.headers.get(header)
+        assert actual_value == expected_value, f"Header '{header}' value mismatch! Expected: {expected_value}, but got: {actual_value}"
 
 
-# ------------------------------------
-# USER LOGIN AND LOGOUT
-# ------------------------------------
-@given("valid login credentials")
-def valid_login_credentials():
-    return {"username": "testuser", "password": "password123"}
-
-@given("invalid login credentials")
-def invalid_login_credentials():
-    return {"username": "invaliduser", "password": "wrongpass"}
-
-@when("I send a GET request to login")
-def login_user(valid_login_credentials):
-    try:
-        params = {"username": valid_login_credentials["username"], "password": valid_login_credentials["password"]}
-        response = requests.get(f"{BASE_URL}/user/login", params=params)
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@when("I send a GET request to login with invalid credentials")
-def login_invalid_user(invalid_login_credentials):
-    try:
-        params = {"username": invalid_login_credentials["username"], "password": invalid_login_credentials["password"]}
-        response = requests.get(f"{BASE_URL}/user/login", params=params)
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@then("the response status code should be 200 and the session should be valid")
-def verify_user_logged_in(login_user):
-    assert login_user.status_code == 200
-    assert "message" in login_user.json()
-
-@then("the response status code should be 403 for invalid credentials")
-def verify_invalid_login(login_invalid_user):
-    assert login_invalid_user.status_code == 403
-
-@when("I send a GET request to logout")
-def logout_user():
-    try:
-        response = requests.get(f"{BASE_URL}/user/logout")
-        response.raise_for_status()
-    except RequestException as e:
-        return e.response
-    return response
-
-@then("the response status code should be 200 and the user should be logged out")
-def verify_user_logged_out(logout_user):
-    assert logout_user.status_code == 200
