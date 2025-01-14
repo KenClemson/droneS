@@ -15,16 +15,19 @@
    - [API Tests](#api-tests-linux)
    - [UI Tests](#ui-tests-linux)
 8. [Reports & Screenshots](#reports-and-screenshots)
+9. [Run Git hub Actions CI](#reports-and-screenshots)
 
 ---
 
 ## About
 
-This repository contains automated test suites (API and UI) for the **droneS** project.
+This repository contains automated test suites (API, UI and Github Actions CI) for the **droneS** project.
 
 ---
 
 ## Repository
+You can access the public repo here: 
+https://github.com/KenClemson/droneS
 
 To get the code, you can clone this repository from GitHub via HTTPS or SSH:
 
@@ -133,3 +136,16 @@ Once the tests have run, you can view:
 
 - **HTML Report(s)** in the `reports` folder.
 - **Screenshots** (for UI tests) in the `screenshots` folder.
+
+
+## Run Git hub Actions CI
+
+
+You can access the public repo here 
+
+https://github.com/KenClemson/droneS
+If you go to Actions you can see the test runs but you can run a test or see the logs unless you are logged in as my user account.
+You can see the workflow Actions file in droneS/.github/workflows/main.yaml.
+
+
+
