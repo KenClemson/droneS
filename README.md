@@ -144,7 +144,7 @@ Once the tests have run, you can view:
 You can access the public repo here 
 
 https://github.com/KenClemson/droneS
-If you go to Actions you can see the test runs but you can run a test or see the logs unless you are logged in as my user account.
+If you go to Actions you can see the test runs but you can't run a test or see the logs unless you are logged in as my user account.
 You can see the workflow Actions file in droneS/.github/workflows/main.yaml.
 
 
